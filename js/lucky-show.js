@@ -597,10 +597,16 @@ async function spin() {
             diceIdleSmall();
             await sleep(180);
             diceHidden();
-
+            document.getElementById('specialMsg').classList.add('hidden');
             alert(res.error || 'Quay thất bại');
             await refreshPrizeAndStatus();
             return;
+        }
+
+        // Show Special Message if code is 'special'
+        const pCode = (res.data.prize && res.data.prize.code) ? res.data.prize.code : '';
+        if (pCode.toLowerCase() === 'special') {
+            document.getElementById('specialMsg').classList.remove('hidden');
         }
 
         // Lấy duration từ API (nếu có), mặc định 3200ms
@@ -633,6 +639,7 @@ async function spin() {
 
         // 3) dừng + thu nhỏ + ẩn
         stopDice3D();
+        document.getElementById('specialMsg').classList.add('hidden'); // Hide message
         diceIdleSmall();
         await sleep(180);
         diceHidden();

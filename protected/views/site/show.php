@@ -23,6 +23,7 @@
     <div class="screen">
         <div class="spin-area">
             <div id="prizeName" class="prize">—</div>
+            <div id="specialMsg" class="special-msg hidden">Ai sẽ là người may mắn nhất hôm nay......</div>
             <div class="board hidden" id="board">
                 <div class="dice-wrap">
                     <!-- scale wrapper: nhỏ lúc chờ, to khi quay -->
