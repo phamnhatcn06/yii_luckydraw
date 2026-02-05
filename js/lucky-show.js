@@ -603,14 +603,20 @@ async function spin() {
             return;
         }
 
-        // Show Special Message if code is 'special'
-        const pCode = (res.data.prize && res.data.prize.code) ? res.data.prize.code : '';
-        if (pCode.toLowerCase() === 'special') {
-            document.getElementById('specialMsg').classList.remove('hidden');
-        }
-
         // Lấy duration từ API (nếu có), mặc định 3200ms
         const spinDuration = (res.data.prize && res.data.prize.duration) ? res.data.prize.duration : 3200;
+        console.log('Spin duration:', spinDuration);
+
+        // Show Special Message if code is 'special' - But delay it halfway
+        const pCode = (res.data.prize && res.data.prize.code) ? res.data.prize.code : '';
+        let specialMsgTimeout = null;
+
+        if (pCode.toLowerCase() === 'special') {
+            const delayTime = spinDuration / 2;
+            specialMsgTimeout = setTimeout(() => {
+                document.getElementById('specialMsg').classList.remove('hidden');
+            }, delayTime);
+        }
         console.log('Spin duration:', spinDuration);
 
         // Đợi nốt phần thời gian còn lại (trừ đi thời gian đã chờ request)
@@ -640,6 +646,7 @@ async function spin() {
         // 3) dừng + thu nhỏ + ẩn
         stopDice3D();
         document.getElementById('specialMsg').classList.add('hidden'); // Hide message
+        if (specialMsgTimeout) clearTimeout(specialMsgTimeout); // Clear timeout just in case
         diceIdleSmall();
         await sleep(180);
         diceHidden();
