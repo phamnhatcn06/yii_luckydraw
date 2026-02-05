@@ -145,7 +145,8 @@ body {
 
 .board {
     margin-top: 20px;
-    width: min(50vw, 650px);
+    /* Responsive: 65% of viewport height or max 80vw width */
+    width: min(65vh, 80vw);
     /* Giảm kích thước nền tròn thêm */
     aspect-ratio: 1 / 1;
     /* Luôn vuông => tròn */
@@ -612,11 +613,12 @@ body {
 
 /* half size 150/2 */
 :root {
-    --dice-size: clamp(200px, 16vw, 340px);
+    /* Dice size: scale with Viewport Height (vh) so it fits on any screen */
+    --dice-size: clamp(120px, 18vh, 400px);
     --z: calc(var(--dice-size) / 2);
-    /* --dice-gap: clamp(60px, 8vw, 150px); */
-    --dice-gap: clamp(180px, 12vw, 300px);
-    /* Tăng khoảng cách xa hơn nữa */
+
+    /* Gap: proportional to dice size */
+    --dice-gap: calc(var(--dice-size) * 0.8);
 }
 
 .front {
