@@ -695,34 +695,7 @@ function cancelWinner() {
     hideWinner();
 }
 
-async function removeWinner(winner, liElement) {
-    if (!confirm('Bạn có chắc muốn huỷ kết quả của: ' + winner.full_name + '?')) return;
 
-    try {
-        const res = await fetchJSON(API.cancel, {
-            method: 'POST',
-            body: JSON.stringify({
-                id: winner.id || winner.participant_id, // Ensure we have ID
-                prize_id: currentPrizeId
-            })
-        });
-
-        if (res.ok) {
-            // Remove from UI
-            liElement.remove();
-
-            // Nếu đang hiển thị người đó trên popup chính thì cũng ẩn luôn
-            // (Tuy nhiên thường nút xoá bấm ở sidebar nghĩa là popup đã đóng rồi)
-
-            updateWinnerSides(); // Check if lists empty to hide sidebars
-        } else {
-            alert('Lỗi: ' + (res.msg || 'Không thể xoá'));
-        }
-    } catch (e) {
-        alert('Lỗi hệ thống khi xoá');
-        console.error(e);
-    }
-}
 
 // SPACE = spin
 document.addEventListener('keydown', function (e) {
@@ -752,17 +725,11 @@ function addWinnerToSide(winner) {
             <span class="partname">${winner.full_name}</span>
             <span class="job">${winner.department || ''}</span>
          </span>
-         <button class="btn-delete" title="Xoá người này">×</button>
+         <button class="btn-delete" data-id="${winner.id || winner.participant_id}" data-prize="${currentPrizeId}" title="Xoá người này">❌</button>
     `;
 
-    // ADD EVENT
-    const btnDel = li.querySelector('.btn-delete');
-    if (btnDel) {
-        btnDel.addEventListener('click', (e) => {
-            e.stopPropagation(); // prevent card click if any
-            removeWinner(winner, li);
-        });
-    }
+    // Event handled by delegation
+
 
     if (!sideToggle) {
         document.getElementById('winnerListLeft').prepend(li);
@@ -770,6 +737,50 @@ function addWinnerToSide(winner) {
         document.getElementById('winnerListRight').prepend(li);
     }
     sideToggle = !sideToggle;
+}
+
+// Event Delegation for Delete Buttons
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('btn-delete')) {
+        const btn = e.target;
+        const li = btn.closest('li');
+
+        const id = btn.getAttribute('data-id');
+        const prizeId = btn.getAttribute('data-prize');
+        const namePart = li.querySelector('.partname');
+        const name = namePart ? namePart.textContent : '---';
+
+        handleRemoveWinnerClick(id, prizeId, name, li);
+    }
+});
+
+async function handleRemoveWinnerClick(id, prizeId, name, li) {
+    if (!id) {
+        console.error('Missing ID');
+        return;
+    }
+
+    if (!confirm('Bạn có chắc muốn huỷ kết quả của: ' + name + '?')) return;
+
+    try {
+        const res = await fetchJSON(API.cancel, {
+            method: 'POST',
+            body: JSON.stringify({
+                id: id,
+                prize_id: prizeId || currentPrizeId
+            })
+        });
+
+        if (res.ok) {
+            li.remove();
+            updateWinnerSides();
+        } else {
+            alert('Lỗi: ' + (res.msg || 'Không thể xoá'));
+        }
+    } catch (e) {
+        alert('Lỗi hệ thống khi xoá');
+        console.error(e);
+    }
 }
 async function nextPrize() {
     const res = await fetchJSON(API.nextPrize, { method: 'POST' });

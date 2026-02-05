@@ -60,6 +60,7 @@
                             <br />
                             <span class="job"><?= CHtml::encode($w['department']) ?></span>
                         </span>
+                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>" title="Huỷ người này">❌</button>
                     </li>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -80,6 +81,7 @@
                             <br />
                             <span class="job"><?= CHtml::encode($w['department']) ?></span>
                         </span>
+                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>" title="Huỷ người này">❌</button>
                     </li>
                 <?php endif; ?>
             <?php endforeach; ?>
