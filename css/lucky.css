@@ -1012,8 +1012,8 @@ body {
     backdrop-filter: blur(8px);
     border-radius: 8px;
     /* Slightly smaller radius */
-    padding: 6px 8px;
-    /* Compact padding */
+    padding: 10px 10px;
+    /* Increased vertical padding to avoid edge feel */
     color: #fff;
     font-size: clamp(11px, 0.85vw, 14px);
     /* Smaller font */
@@ -1053,8 +1053,6 @@ span.numberBlock {
 span.partInfo {
     flex: 1;
     font-weight: 500;
-    flex: 1;
-    font-weight: 500;
     line-height: 1.0;
     /* Very tight line height */
     display: flex;
@@ -1067,8 +1065,8 @@ span.partInfo .partname {
     font-size: 1em;
     font-weight: 800;
     color: #fff;
-    margin-bottom: 0px;
-    /* Remove margin */
+    margin-bottom: -3px;
+    /* Pull job title closer */
     display: block;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     line-height: 1.0;
