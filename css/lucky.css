@@ -998,8 +998,9 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    /* Spacing between cards */
+    flex-direction: column;
+    gap: 6px;
+    /* Tighter list spacing */
 }
 
 /* item - styled as individual glass cards */
@@ -1009,15 +1010,18 @@ body {
     border: 1px solid rgba(255, 215, 106, 0.25);
     /* Gold border hint */
     backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 10px 12px;
+    border-radius: 8px;
+    /* Slightly smaller radius */
+    padding: 6px 8px;
+    /* Compact padding */
     color: #fff;
-    font-size: clamp(12px, 0.9vw, 15px);
-    /* Reduced font size */
+    font-size: clamp(11px, 0.85vw, 14px);
+    /* Smaller font */
 
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    /* Tighter gap */
 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, background 0.3s;
@@ -1030,25 +1034,29 @@ body {
 }
 
 span.numberBlock {
-    min-width: 50px;
+    min-width: 35px;
+    /* Smaller number block */
     height: auto;
     background: linear-gradient(135deg, #ffd700, #ffaa00);
     color: #420d0d;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 8px;
-    border-radius: 8px;
+    padding: 3px 6px;
+    border-radius: 6px;
     font-weight: 900;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    font-size: 1em;
+    font-size: 0.95em;
+
 }
 
 span.partInfo {
     flex: 1;
     font-weight: 500;
-    line-height: 1.1;
-    /* Tighter line height */
+    flex: 1;
+    font-weight: 500;
+    line-height: 1.0;
+    /* Very tight line height */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1063,7 +1071,7 @@ span.partInfo .partname {
     /* Remove margin */
     display: block;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    line-height: 1.1;
+    line-height: 1.0;
 }
 
 span.partInfo .job {
