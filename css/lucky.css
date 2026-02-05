@@ -145,8 +145,8 @@ body {
 
 .board {
     margin-top: 20px;
-    /* Responsive: 65% of viewport height or max 80vw width */
-    width: min(65vh, 80vw);
+    /* Responsive: 55% of viewport height or max 70vw width */
+    width: min(55vh, 70vw);
     /* Giảm kích thước nền tròn thêm */
     aspect-ratio: 1 / 1;
     /* Luôn vuông => tròn */
