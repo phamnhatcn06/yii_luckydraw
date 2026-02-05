@@ -60,7 +60,8 @@
                             <br />
                             <span class="job"><?= CHtml::encode($w['department']) ?></span>
                         </span>
-                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>" title="Huỷ người này">❌</button>
+                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>"
+                            title="Huỷ người này">❌</button>
                     </li>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -81,7 +82,8 @@
                             <br />
                             <span class="job"><?= CHtml::encode($w['department']) ?></span>
                         </span>
-                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>" title="Huỷ người này">❌</button>
+                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>"
+                            title="Huỷ người này">❌</button>
                     </li>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -120,6 +122,7 @@
             prize: "<?php echo $baseUrl; ?>/api/prize",
             status: "<?php echo $baseUrl; ?>/api/status",
             confirm: "<?php echo $baseUrl; ?>/api/confirmWinner",
+            cancel: "<?php echo $baseUrl; ?>/api/cancelWinner",
             nextPrize: "<?php echo $baseUrl; ?>/api/nextPrize",
         };
     </script>
