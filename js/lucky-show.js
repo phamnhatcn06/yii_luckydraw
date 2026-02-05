@@ -55,13 +55,16 @@ const diceState = cubes.map((el, i) => ({
     rx: -28 + i * 6,
     ry: 35 + i * 10,
     rz: 0,
-    vx: 0, vy: 0, vz: 0,
+    tx: 0, ty: 0,       // Translation x, y
+    vx: 0, vy: 0, vz: 0, // Rotation velocity
+    vtx: 0, vty: 0,      // Translation velocity
     spinning: false,
 }));
 
 function applyDice(d) {
     if (!d.el) return;
-    d.el.style.transform = `rotateX(${d.rx}deg) rotateY(${d.ry}deg) rotateZ(${d.rz}deg)`;
+    // Add translation for "rolling" effect
+    d.el.style.transform = `translate3d(${d.tx}px, ${d.ty}px, 0) rotateX(${d.rx}deg) rotateY(${d.ry}deg) rotateZ(${d.rz}deg)`;
 }
 
 // function randVel(){
@@ -88,6 +91,11 @@ function startDice3D() {
         d.vx = v.vx;
         d.vy = v.vy;
         d.vz = v.vz;
+
+        // Random tumbling velocity
+        d.vtx = (Math.random() - 0.5) * 40; // Mạnh hơn
+        d.vty = (Math.random() - 0.5) * 40;
+
         d.spinning = true;
     });
 }
@@ -99,7 +107,8 @@ function stopDice3D() {
 function diceRAF() {
     diceState.forEach(d => {
         if (d.spinning) {
-            if (Math.random() < 0.03) {
+            // ROTATION CHAOS
+            if (Math.random() < 0.05) { // Frequent changes
                 const v = randVel();
                 d.vx = v.vx;
                 d.vy = v.vy;
@@ -108,6 +117,29 @@ function diceRAF() {
             d.rx += d.vx;
             d.ry += d.vy;
             d.rz += d.vz;
+
+            // TRANSLATION CHAOS (ROLLING)
+            d.tx += d.vtx;
+            d.ty += d.vty;
+
+            // Boundary bounce (keep within ~100px range)
+            const LIMIT = 80;
+            if (d.tx > LIMIT) { d.tx = LIMIT; d.vtx *= -0.8; }
+            if (d.tx < -LIMIT) { d.tx = -LIMIT; d.vtx *= -0.8; }
+            if (d.ty > LIMIT) { d.ty = LIMIT; d.vty *= -0.8; }
+            if (d.ty < -LIMIT) { d.ty = -LIMIT; d.vty *= -0.8; }
+
+            // Random jostle
+            if (Math.random() < 0.1) {
+                d.vtx += (Math.random() - 0.5) * 10;
+                d.vty += (Math.random() - 0.5) * 10;
+            }
+        } else {
+            // Return to center slowly
+            d.tx *= 0.85;
+            d.ty *= 0.85;
+            if (Math.abs(d.tx) < 0.5) d.tx = 0;
+            if (Math.abs(d.ty) < 0.5) d.ty = 0;
         }
         applyDice(d);
     });
