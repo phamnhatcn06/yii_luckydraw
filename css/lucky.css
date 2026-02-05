@@ -1085,8 +1085,8 @@ span.numberBlock {
 span.partInfo {
     flex: 1;
     font-weight: 500;
-    line-height: 1.0;
-    /* Very tight line height */
+    line-height: 1.2;
+    /* Normal line height */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1097,11 +1097,11 @@ span.partInfo .partname {
     font-size: 1em;
     font-weight: 800;
     color: #fff;
-    margin-bottom: -3px;
-    /* Pull job title closer */
+    margin-bottom: 8px;
+    /* Gap ~10px */
     display: block;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    line-height: 1.0;
+    line-height: 1.2;
 }
 
 span.partInfo .job {
