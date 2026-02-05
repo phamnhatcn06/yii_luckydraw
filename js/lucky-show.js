@@ -695,6 +695,35 @@ function cancelWinner() {
     hideWinner();
 }
 
+async function removeWinner(winner, liElement) {
+    if (!confirm('Bạn có chắc muốn huỷ kết quả của: ' + winner.full_name + '?')) return;
+
+    try {
+        const res = await fetchJSON(API.cancel, {
+            method: 'POST',
+            body: JSON.stringify({
+                id: winner.id || winner.participant_id, // Ensure we have ID
+                prize_id: currentPrizeId
+            })
+        });
+
+        if (res.ok) {
+            // Remove from UI
+            liElement.remove();
+
+            // Nếu đang hiển thị người đó trên popup chính thì cũng ẩn luôn
+            // (Tuy nhiên thường nút xoá bấm ở sidebar nghĩa là popup đã đóng rồi)
+
+            updateWinnerSides(); // Check if lists empty to hide sidebars
+        } else {
+            alert('Lỗi: ' + (res.msg || 'Không thể xoá'));
+        }
+    } catch (e) {
+        alert('Lỗi hệ thống khi xoá');
+        console.error(e);
+    }
+}
+
 // SPACE = spin
 document.addEventListener('keydown', function (e) {
     const isSpace = (e.code === 'Space' || e.keyCode === 32);
@@ -717,19 +746,28 @@ function addWinnerToSide(winner) {
     const li = document.createElement('li');
     li.innerHTML = `
          <span class="numberBlock">
-            <b>${winner.code}</b>
-            </span>
-            <span class="partInfo">
-                <span class="partname">${winner.full_name}</span>
-                <br/>
-                <span class="job">${winner.department}</span>
-            </span>
+            ${winner.code}
+         </span>
+         <span class="partInfo">
+            <span class="partname">${winner.full_name}</span>
+            <span class="job">${winner.department || ''}</span>
+         </span>
+         <button class="btn-delete" title="Xoá người này">×</button>
     `;
 
-    if (sideToggle) {
-        document.getElementById('winnerListLeft').append(li);
+    // ADD EVENT
+    const btnDel = li.querySelector('.btn-delete');
+    if (btnDel) {
+        btnDel.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent card click if any
+            removeWinner(winner, li);
+        });
+    }
+
+    if (!sideToggle) {
+        document.getElementById('winnerListLeft').prepend(li);
     } else {
-        document.getElementById('winnerListRight').append(li);
+        document.getElementById('winnerListRight').prepend(li);
     }
     sideToggle = !sideToggle;
 }

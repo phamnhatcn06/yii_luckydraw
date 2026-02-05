@@ -1025,6 +1025,38 @@ body {
 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, background 0.3s;
+    position: relative;
+    /* For absolute button positioning if needed, or flex alignment */
+}
+
+/* Delete button hidden by default, shown on hover */
+.winners-side li .btn-delete {
+    background: #ff5b5b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-left: auto;
+    /* Push to right */
+    padding: 0;
+}
+
+.winners-side li:hover .btn-delete {
+    opacity: 1;
+}
+
+.winners-side li .btn-delete:hover {
+    background: #ff0000;
+    transform: scale(1.1);
 }
 
 .winners-side li:hover {

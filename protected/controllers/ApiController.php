@@ -97,6 +97,20 @@ class ApiController extends Controller
 
     public function actionCancelWinner()
     {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!isset($data['id']) || !isset($data['prize_id'])) {
+            $this->json(['ok' => false, 'msg' => 'Missing params']);
+        }
+
+        // Xoá record winner
+        Yii::app()->db->createCommand("
+            DELETE FROM winners 
+            WHERE participant_id = :uid AND prize_id = :prize_id
+        ")->execute(array(
+                    ':prize_id' => (int) $data['prize_id'],
+                    ':uid' => (int) $data['id']
+                ));
+
         $this->json(['ok' => true]);
     }
 
