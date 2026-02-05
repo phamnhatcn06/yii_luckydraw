@@ -1027,6 +1027,8 @@ body {
     transition: transform 0.3s ease, background 0.3s;
     position: relative;
     /* For absolute button positioning if needed, or flex alignment */
+    pointer-events: auto;
+    /* Re-enable clicks/hover */
 }
 
 /* Delete button hidden by default, shown on hover */
