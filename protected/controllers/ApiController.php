@@ -51,7 +51,8 @@ class ApiController extends Controller
 
         $row = Yii::app()->db->createCommand("
         SELECT p.*,
-               IFNULL(w.c,0) AS awarded
+               IFNULL(w.c,0) AS awarded,
+               p.duration
         FROM prizes p
         LEFT JOIN (
             SELECT prize_id, COUNT(*) c
@@ -82,7 +83,7 @@ class ApiController extends Controller
       WHERE p.is_active=1 AND w.participant_id IS NULL
     ")->queryScalar();
 
-        $this->json(array('ok' => true, 'data' => array('remaining' => (int)$remaining)));
+        $this->json(array('ok' => true, 'data' => array('remaining' => (int) $remaining)));
     }
 
     public function actionConfirmWinner()
@@ -90,7 +91,7 @@ class ApiController extends Controller
         $data = json_decode(file_get_contents('php://input'), true);
         Yii::app()->db->createCommand("
         UPDATE winners SET confirm = 1 WHERE participant_id = :uid AND prize_id = :prize_id
-      ")->execute(array(':prize_id' => (int)$data['prize_id'], ':uid' => (int)$data['id']));
+      ")->execute(array(':prize_id' => (int) $data['prize_id'], ':uid' => (int) $data['id']));
         $this->json(['ok' => true]);
     }
 
@@ -136,7 +137,7 @@ class ApiController extends Controller
         SELECT value FROM settings WHERE name='current_prize_id'
     ")->queryScalar();
             $prize = Yii::app()->db->createCommand("
-        SELECT p.id, p.prize_name, p.prize_order, p.quantity,p.code,
+        SELECT p.id, p.prize_name, p.prize_order, p.quantity,p.code,p.duration,
                IFNULL(w.c,0) AS awarded
         FROM prizes p
         LEFT JOIN (
@@ -147,8 +148,8 @@ class ApiController extends Controller
         WHERE p.id = :id
         LIMIT 1
     ")->queryRow(true, [
-                ':id' => $prizeId
-            ]);
+                        ':id' => $prizeId
+                    ]);
 
             // kiểm tra còn lượt quay không
             $count = Yii::app()->db->createCommand("
@@ -186,14 +187,14 @@ class ApiController extends Controller
             // 3) Insert winner (DB UNIQUE đảm bảo chỉ trúng 1 lần)
             Yii::app()->db->createCommand("
         INSERT INTO winners (prize_id, participant_id,confirm) VALUES (:pid,:uid,0)
-      ")->execute(array(':pid' => (int)$prize['id'], ':uid' => (int)$winner['id']));
+      ")->execute(array(':pid' => (int) $prize['id'], ':uid' => (int) $winner['id']));
 
             $tx->commit();
 
             $this->json(array(
                 'ok' => true,
                 'data' => array(
-                    'prize' => array('id' => (int)$prize['id'], 'name' => $prize['prize_name'], 'code' => $prize['code']),
+                    'prize' => array('id' => (int) $prize['id'], 'name' => $prize['prize_name'], 'code' => $prize['code'], 'duration' => (int) $prize['duration']),
                     'winner' => array(
                         'id' => $winner['id'],
                         'code' => $winner['code'],
@@ -204,7 +205,8 @@ class ApiController extends Controller
                 )
             ));
         } catch (Exception $e) {
-            if ($tx->active) $tx->rollback();
+            if ($tx->active)
+                $tx->rollback();
             $this->json(array('ok' => false, 'error' => 'Spin failed'), 500);
         }
     }

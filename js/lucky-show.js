@@ -588,16 +588,54 @@ async function spin() {
             body: JSON.stringify({})
         });
 
-        // cho quay đủ đã
-        await sleep(3200);
+        // Đợi API trả về để biết duration
+        const res = await apiPromise;
+
+        if (!res.ok) {
+            // Lỗi -> dừng luôn
+            stopDice3D();
+            diceIdleSmall();
+            await sleep(180);
+            diceHidden();
+
+            alert(res.error || 'Quay thất bại');
+            await refreshPrizeAndStatus();
+            return;
+        }
+
+        // Lấy duration từ API (nếu có), mặc định 3200ms
+        const spinDuration = (res.data.prize && res.data.prize.duration) ? res.data.prize.duration : 3200;
+        console.log('Spin duration:', spinDuration);
+
+        // Đợi nốt phần thời gian còn lại (trừ đi thời gian đã chờ request)
+        // Tuy nhiên để đơn giản và mượt, ta cứ chờ đủ duration tính từ lúc bắt đầu quay
+        // Hoặc đơn giản là: sau khi có kết quả, chờ thêm (duration) rồi mới dừng.
+        // Cách tốt nhất: song song request và sleep(minimum), sau đó check duration.
+
+        // Ở đây ta làm cách đơn giản: Chờ request xong, lấy duration, rồi wait thêm một chút hoặc wait cho đủ tổng duration.
+        // Nhưng vì request có thể nhanh/chậm, ta nên wait một khoảng cố định + duration của giải.
+
+        // Logic mới:
+        // 1. Start quay
+        // 2. Gọi API
+        // 3. API trả về duration (VD: 5000ms)
+        // 4. Đảm bảo tổng thời gian quay >= duration.
+
+        // await sleep(3200); // <-- BỎ dòng này đi vì ta sẽ wait động
+
+        // Tính toán thời gian cần wait thêm
+        // Giả sử request mất 200ms, duration = 5000ms -> wait thêm 4800ms.
+        // Nhưng ta không đo chính xác thời gian request ở đây start/end.
+        // Cách đơn giản nhất: Chờ request xong -> wait duration (chính xác là wait duration từ lúc request xong cũng được, hoặc hard set).
+
+        // Để đúng ý "mỗi giải thời gian khác nhau", ta sẽ sleep theo duration của giải đó.
+        await sleep(spinDuration);
 
         // 3) dừng + thu nhỏ + ẩn
         stopDice3D();
         diceIdleSmall();
         await sleep(180);
         diceHidden();
-
-        const res = await apiPromise;
         if (!res.ok) {
             alert(res.error || 'Quay thất bại');
             await refreshPrizeAndStatus();
