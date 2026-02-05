@@ -102,9 +102,9 @@ class ApiController extends Controller
             $this->json(['ok' => false, 'msg' => 'Missing params']);
         }
 
-        // Xoá record winner
+        // Update confirm = 0 để không tính vào giải, nhưng vẫn giữ trong bảng winners để không quay lại vào người này
         Yii::app()->db->createCommand("
-            DELETE FROM winners 
+            UPDATE winners SET confirm = 0
             WHERE participant_id = :uid AND prize_id = :prize_id
         ")->execute(array(
                     ':prize_id' => (int) $data['prize_id'],
