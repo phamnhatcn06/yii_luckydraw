@@ -25,15 +25,17 @@ class SiteController extends Controller
         SELECT 
             p.code,
             p.full_name,
-            p.department
+            p.department,
+            p.id,
+            t.prize_id
         FROM winners t
         LEFT JOIN participants p ON t.participant_id = p.id
         WHERE t.prize_id = :id
           AND t.confirm = 1
         ORDER BY t.id ASC
     ")->queryAll(true, [
-                ':id' => $currentPrizeId
-            ]);
+                    ':id' => $currentPrizeId
+                ]);
         $this->render('show', ['winnerList' => $winnerList]);
     }
 }
