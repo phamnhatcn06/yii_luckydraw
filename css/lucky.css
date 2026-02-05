@@ -145,9 +145,11 @@ body {
 
 .board {
     margin-top: 20px;
-    width: min(240px, 94vw);
-    aspect-ratio: 3 / 3;
-    border-radius: 999px;
+    width: min(85vw, 1000px);
+    /* Kích thước board đủ lớn */
+    aspect-ratio: 1 / 1;
+    /* Luôn vuông => tròn */
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -511,7 +513,8 @@ body {
 /* Layout */
 .dice-row {
     display: flex;
-    gap: 150px;
+    gap: var(--dice-gap);
+    /* Use the variable */
     align-items: center;
     justify-content: center;
 }
@@ -612,8 +615,8 @@ body {
     --dice-size: clamp(200px, 16vw, 340px);
     --z: calc(var(--dice-size) / 2);
     /* --dice-gap: clamp(60px, 8vw, 150px); */
-    --dice-gap: clamp(100px, 8vw, 180px);
-    /* Tăng khoảng cách vì xúc xắc to hơn */
+    --dice-gap: clamp(180px, 12vw, 300px);
+    /* Tăng khoảng cách xa hơn nữa */
 }
 
 .front {
