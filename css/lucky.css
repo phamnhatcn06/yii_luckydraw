@@ -145,8 +145,8 @@ body {
 
 .board {
     margin-top: 20px;
-    width: min(85vw, 1000px);
-    /* Kích thước board đủ lớn */
+    width: min(60vw, 750px);
+    /* Giảm kích thước nền tròn */
     aspect-ratio: 1 / 1;
     /* Luôn vuông => tròn */
     border-radius: 50%;
