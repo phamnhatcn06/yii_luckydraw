@@ -511,7 +511,7 @@ function getRandomColor() {
     ];
     return colors[Math.floor(Math.random() * colors.length)];
 }
-}
+
 
 function stepBoom() {
     if (!boomRun || !bctx || !boomCanvas) return;
