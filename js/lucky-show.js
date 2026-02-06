@@ -461,7 +461,7 @@ function megaConfetti() {
     booms = [];
     boomRun = true;
 
-    const count = 300; // lots of confetti
+    const count = 500; // lots of confetti (increased from 300)
     const W = boomCanvas.width;
     const H = boomCanvas.height;
 
@@ -507,6 +507,7 @@ function getRandomColor() {
     const colors = [
         '255,0,0', '0,255,0', '0,0,255', '255,255,0', '0,255,255', '255,0,255', // basic
         '255,99,71', '144,238,144', '135,206,235', '255,215,0', // fancy
+        '255,165,0', '128,0,128', '255,192,203', '64,224,208', // orange, purple, pink, turquoise
         '255,255,255' // white
     ];
     return colors[Math.floor(Math.random() * colors.length)];

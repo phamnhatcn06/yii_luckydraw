@@ -18,6 +18,7 @@
     </style>
     <canvas id="fxCanvas" class="fx"></canvas>
     <canvas id="petalCanvas" class="fx"></canvas>
+    <canvas id="boomCanvas" class="fx" style="z-index: 2000;"></canvas>
 
     <div id="lightSweep" class="light-sweep"></div>
     <div class="screen">
