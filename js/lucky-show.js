@@ -396,8 +396,10 @@ async function refreshPrizeAndStatus() {
             if (p.data.quantity == p.data.awarded) {
                 prizeLocked = true;
                 prizeNameEl.textContent = 'ĐÃ QUAY XONG GIẢI';
+                document.getElementById('btnNextPrize').classList.add('active');
             } else {
                 prizeNameEl.textContent = p.data.prize_name;
+                document.getElementById('btnNextPrize').classList.remove('active');
             }
         }
         if (p.ok && !p.data) prizeNameEl.textContent = 'ĐÃ QUAY XONG';
@@ -800,12 +802,15 @@ async function confirmWinner() {
 
     // TODO: gọi API confirm nếu cần
     console.log('Đã xác nhận kết quả');
+    await refreshPrizeAndStatus();
 }
 
 function cancelWinner() {
     stopPetals(); // Stop falling stars
+    stopMegaConfetti(); // Ensure special confetti stops
     if (fw) fw.stopContinuous(); // Stop fireworks
     hideWinner();
+    refreshPrizeAndStatus();
 }
 
 

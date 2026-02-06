@@ -1195,6 +1195,26 @@ span.partInfo .job {
     background: #ff0000;
 }
 
+.next-price.active {
+    background: #ff0000;
+    animation: nextPulse 1.2s infinite;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+}
+
+@keyframes nextPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 /* --- Center Winner Box (Single Qty) --- */
 .winner-center {
     position: fixed;
