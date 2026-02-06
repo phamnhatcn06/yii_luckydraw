@@ -451,41 +451,57 @@ function boomBurst() {
         });
     }
     requestAnimationFrame(stepBoom);
-    requestAnimationFrame(stepBoom);
 }
 
-function megaConfetti() {
+let megaConfettiActive = false;
+let megaLoopId = null;
+
+function startMegaConfetti() {
     if (!bctx || !boomCanvas) return;
-
-    // Clear existing if any
-    booms = [];
+    // booms = [];
     boomRun = true;
+    megaConfettiActive = true;
 
-    const count = 500; // lots of confetti (increased from 300)
+    // Start animation loop if not already running effectively
+    // logic in stepBoom handles the loop, but we need to ensure it's kicked off
+    if (booms.length === 0) requestAnimationFrame(stepBoom);
+
+    function spawnLoop() {
+        if (!megaConfettiActive) return;
+        spawnMegaBatch();
+        megaLoopId = setTimeout(spawnLoop, 200); // Continuous spawn every 200ms
+    }
+    spawnLoop();
+}
+
+function stopMegaConfetti() {
+    megaConfettiActive = false;
+    if (megaLoopId) clearTimeout(megaLoopId);
+}
+
+function spawnMegaBatch() {
+    if (!bctx || !boomCanvas) return;
     const W = boomCanvas.width;
     const H = boomCanvas.height;
+    const count = 50; // spawn per batch
 
-    // Left side cannons
+    // Left side
     for (let i = 0; i < count; i++) {
         const x = -20;
         const y = H * 0.7 + (Math.random() * 100 - 50);
-        const angle = -Math.PI / 4 + (Math.random() * Math.PI / 2); // Aim sort of up/right
-        const sp = 15 + Math.random() * 20; // fast
-
+        const angle = -Math.PI / 4 + (Math.random() * Math.PI / 2);
+        const sp = 15 + Math.random() * 20;
         booms.push(createConfettiParticle(x, y, sp, angle));
     }
 
-    // Right side cannons
+    // Right side
     for (let i = 0; i < count; i++) {
         const x = W + 20;
         const y = H * 0.7 + (Math.random() * 100 - 50);
-        const angle = -Math.PI * 3 / 4 + (Math.random() * Math.PI / 2); // Aim sort of up/left
+        const angle = -Math.PI * 3 / 4 + (Math.random() * Math.PI / 2);
         const sp = 15 + Math.random() * 20;
-
         booms.push(createConfettiParticle(x, y, sp, angle));
     }
-
-    requestAnimationFrame(stepBoom);
 }
 
 function createConfettiParticle(x, y, sp, angle) {
@@ -602,11 +618,12 @@ function showWinner(data) {
     // Check special prize for mega confetti
     const pCode = (window.currentPrizeData && window.currentPrizeData.code) ? window.currentPrizeData.code : '';
     if (pCode.toLowerCase() === 'special') {
-        megaConfetti();
+        startMegaConfetti();
     }
 }
 
 function hideWinner() {
+    stopMegaConfetti(); // Stop confetti loop
     document.getElementById('winnerOverlay').classList.add('hidden');
     const popup = document.getElementById('winnerPopup');
     popup.classList.remove('show');
