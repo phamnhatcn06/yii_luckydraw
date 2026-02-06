@@ -97,6 +97,44 @@ body {
 /*    margin-top: 4vh;*/
 /*    display:flex; justify-content:center; align-items:center;*/
 /*}*/
+/* Board (Plate Background) */
+.board {
+    /* Provide a white plate background */
+    position: relative;
+    padding: 6vh 4vw;
+    /* Space around dice */
+    border-radius: 50%;
+    /* Oval/Circle */
+
+    /* Make it look like a plate */
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        /* Drop shadow */
+        inset 0 0 30px rgba(0, 0, 0, 0.05),
+        /* Inner subtle shadow */
+        inset 0 0 0 6px rgba(255, 255, 255, 0.8);
+    /* Rim highlight */
+
+    /* Ensure flex centering of children (dice-wrap) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Ensure it doesn't take full width if not needed */
+    width: max-content;
+    margin: 0 auto;
+    /* Center in spin-area */
+
+    /* Slight transparency to blend with fancy background? User said "màu trắng" (white). 
+       Let's keep it opaque or 90%. */
+}
+
+/* Ensure hidden works */
+.board.hidden {
+    display: none;
+}
+
 .dice-anim.hidden {
     opacity: 0;
     transform: scale(.75);
