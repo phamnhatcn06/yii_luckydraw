@@ -669,7 +669,8 @@ async function spin() {
     const prize = await fetchJSON(API.prize);
     if (prize.data.finished) {
         prizeLocked = true;
-        alert('Giải này đã quay đủ, hãy bấm NEXT');
+        // alert('Giải này đã quay đủ, hãy bấm NEXT'); // Bỏ alert theo yêu cầu "không tác dụng"
+        document.getElementById('btnNextPrize').classList.add('active'); // Ensure button is highlighted
         return;
     }
     hideWinner();
@@ -819,7 +820,6 @@ function cancelWinner() {
 document.addEventListener('keydown', function (e) {
     const isSpace = (e.code === 'Space' || e.keyCode === 32);
     if (prizeLocked) {
-        console.log('Giải đã hết — cần chuyển giải');
         return;
     }
     if (!isSpace) return;
