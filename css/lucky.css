@@ -1301,19 +1301,22 @@ span.partInfo .job {
 /* Special Message Styling */
 .special-msg {
     position: fixed;
-    bottom: 8vh;
+    bottom: 5vh;
+    /* Lower */
     left: 50%;
     transform: translateX(-50%);
     font-size: clamp(20px, 2.5vw, 32px);
     font-weight: 800;
     /* Bolder */
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 15px #ffd700;
-    /* Pop out */
+    color: #ffeb3b;
+    /* YELLOW */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6);
+    /* Gold Glow */
     text-transform: none;
     /* Allow normal case */
     text-align: center;
-    z-index: 10;
+    z-index: 100;
+    /* High Z */
     width: 90%;
 }
 
