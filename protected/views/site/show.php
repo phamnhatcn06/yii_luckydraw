@@ -46,8 +46,32 @@
 
 
     </div>
-    <!-- Cánh gà trái -->
-    <div id="winnersLeft" class="winners-side left <?= count($winnerList) == 0 ? 'hidden' : '' ?>">
+
+    <!-- Khu vực hiển thị người trúng giải duy nhất (nếu giải có quantity=1) -->
+    <div id="winnerCenter"
+        class="winner-center <?= (isset($prize) && $prize['quantity'] == 1 && count($winnerList) > 0) ? '' : 'hidden' ?>">
+        <ul id="winnerListCenter">
+            <?php if (isset($prize) && $prize['quantity'] == 1): ?>
+                <?php foreach ($winnerList as $w): ?>
+                    <li>
+                        <span class="center-content">
+                            <span class="numberBlock"><?= CHtml::encode($w['code']) ?></span>
+                            <div class="info-block">
+                                <span class="partname"><?= CHtml::encode($w['full_name']) ?></span>
+                                <span class="job"><?= CHtml::encode($w['department']) ?></span>
+                            </div>
+                        </span>
+                        <button class="btn-delete" data-id="<?= $w['id'] ?>" data-prize="<?= $w['prize_id'] ?>"
+                            title="Huỷ người này">🗑</button>
+                    </li>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </ul>
+    </div>
+
+    <!-- Cánh gà trái (chỉ hiện nếu quantity > 1) -->
+    <div id="winnersLeft"
+        class="winners-side left <?= (isset($prize) && $prize['quantity'] > 1 && count($winnerList) > 0) ? '' : 'hidden' ?>">
         <!--    <div class="side-title">🎉 Người trúng giải</div>-->
         <ul id="winnerListLeft">
             <?php foreach ($winnerList as $i => $w): ?>
@@ -70,7 +94,8 @@
     </div>
 
     <!-- Cánh gà phải -->
-    <div id="winnersRight" class="winners-side right <?= count($winnerList) == 0 ? 'hidden' : '' ?>">
+    <div id="winnersRight"
+        class="winners-side right <?= (isset($prize) && $prize['quantity'] > 1 && count($winnerList) > 0) ? '' : 'hidden' ?>">
         <ul id="winnerListRight">
             <?php foreach ($winnerList as $i => $w): ?>
                 <?php if ($i % 2 === 1): ?>

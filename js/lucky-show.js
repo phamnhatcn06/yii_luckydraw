@@ -392,6 +392,7 @@ async function refreshPrizeAndStatus() {
     try {
         const p = await fetchJSON(API.prize);
         if (p.ok && p.data) {
+            window.currentPrizeData = p.data; // Store globally
             if (p.data.quantity == p.data.awarded) {
                 prizeLocked = true;
                 prizeNameEl.textContent = 'ĐÃ QUAY XONG GIẢI';
@@ -548,13 +549,24 @@ function hideWinner() {
 function updateWinnerSides() {
     const left = document.getElementById('winnerListLeft');
     const right = document.getElementById('winnerListRight');
+    const center = document.getElementById('winnerListCenter');
 
-    if (
-        (left && left.children.length > 0) ||
-        (right && right.children.length > 0)
-    ) {
+    if (left && left.children.length > 0) {
         document.getElementById('winnersLeft')?.classList.remove('hidden');
+    } else {
+        document.getElementById('winnersLeft')?.classList.add('hidden');
+    }
+
+    if (right && right.children.length > 0) {
         document.getElementById('winnersRight')?.classList.remove('hidden');
+    } else {
+        document.getElementById('winnersRight')?.classList.add('hidden');
+    }
+
+    if (center && center.children.length > 0) {
+        document.getElementById('winnerCenter')?.classList.remove('hidden');
+    } else {
+        document.getElementById('winnerCenter')?.classList.add('hidden');
     }
 }
 
@@ -744,6 +756,35 @@ function addWinnerToSide(winner) {
 
     // Event handled by delegation
 
+
+    // Check if single winner mode (quantity == 1)
+    const isSingleWinner = window.currentPrizeData && window.currentPrizeData.quantity == 1;
+
+    if (isSingleWinner) {
+        // Render to center
+        const centerList = document.getElementById('winnerListCenter');
+        // Add special markup for center
+        li.innerHTML = `
+            <span class="center-content">
+                <span class="numberBlock">${winner.code}</span>
+                 <div class="info-block">
+                    <span class="partname">${winner.full_name}</span>
+                    <span class="job">${winner.department || ''}</span>
+                 </div>
+            </span>
+             <button class="btn-delete" data-id="${winner.id || winner.participant_id}" data-prize="${currentPrizeId}" title="Xoá người này">🗑</button>
+         `;
+
+        if (centerList) {
+            centerList.innerHTML = ''; // Ensure only one if logic requires, but prepend is fine too
+            centerList.prepend(li);
+            document.getElementById('winnerCenter').classList.remove('hidden');
+            // Hide sides just in case
+            document.getElementById('winnersLeft').classList.add('hidden');
+            document.getElementById('winnersRight').classList.add('hidden');
+        }
+        return;
+    }
 
     if (!sideToggle) {
         document.getElementById('winnerListLeft').prepend(li);

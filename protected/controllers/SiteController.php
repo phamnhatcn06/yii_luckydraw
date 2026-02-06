@@ -36,6 +36,11 @@ class SiteController extends Controller
     ")->queryAll(true, [
                     ':id' => $currentPrizeId
                 ]);
-        $this->render('show', ['winnerList' => $winnerList]);
+
+
+        $currentPrize = Yii::app()->db->createCommand("SELECT * FROM prizes WHERE id=:id")
+            ->queryRow(true, [':id' => $currentPrizeId]);
+
+        $this->render('show', ['winnerList' => $winnerList, 'prize' => $currentPrize]);
     }
 }
