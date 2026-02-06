@@ -487,19 +487,22 @@ function spawnMegaBatch() {
 
     // Left side
     for (let i = 0; i < count; i++) {
-        const x = -20;
-        const y = H * 0.7 + (Math.random() * 100 - 50);
-        const angle = -Math.PI / 4 + (Math.random() * Math.PI / 2);
-        const sp = 15 + Math.random() * 20;
+        const x = -10;
+        const y = H * 0.9 - (Math.random() * 50); // Lower, closer to bottom
+        // Angle: Shoot mostly UP, slightly right. (-90 to -60 degrees)
+        // -PI/2 is UP.
+        const angle = -Math.PI / 2 + (Math.random() * 0.5);
+        const sp = 18 + Math.random() * 15;
         booms.push(createConfettiParticle(x, y, sp, angle));
     }
 
     // Right side
     for (let i = 0; i < count; i++) {
-        const x = W + 20;
-        const y = H * 0.7 + (Math.random() * 100 - 50);
-        const angle = -Math.PI * 3 / 4 + (Math.random() * Math.PI / 2);
-        const sp = 15 + Math.random() * 20;
+        const x = W + 10;
+        const y = H * 0.9 - (Math.random() * 50);
+        // Angle: Shoot mostly UP, slightly left. (-120 to -90 degrees)
+        const angle = -Math.PI / 2 - (Math.random() * 0.5);
+        const sp = 18 + Math.random() * 15;
         booms.push(createConfettiParticle(x, y, sp, angle));
     }
 }
