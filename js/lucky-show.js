@@ -451,6 +451,66 @@ function boomBurst() {
         });
     }
     requestAnimationFrame(stepBoom);
+    requestAnimationFrame(stepBoom);
+}
+
+function megaConfetti() {
+    if (!bctx || !boomCanvas) return;
+
+    // Clear existing if any
+    booms = [];
+    boomRun = true;
+
+    const count = 300; // lots of confetti
+    const W = boomCanvas.width;
+    const H = boomCanvas.height;
+
+    // Left side cannons
+    for (let i = 0; i < count; i++) {
+        const x = -20;
+        const y = H * 0.7 + (Math.random() * 100 - 50);
+        const angle = -Math.PI / 4 + (Math.random() * Math.PI / 2); // Aim sort of up/right
+        const sp = 15 + Math.random() * 20; // fast
+
+        booms.push(createConfettiParticle(x, y, sp, angle));
+    }
+
+    // Right side cannons
+    for (let i = 0; i < count; i++) {
+        const x = W + 20;
+        const y = H * 0.7 + (Math.random() * 100 - 50);
+        const angle = -Math.PI * 3 / 4 + (Math.random() * Math.PI / 2); // Aim sort of up/left
+        const sp = 15 + Math.random() * 20;
+
+        booms.push(createConfettiParticle(x, y, sp, angle));
+    }
+
+    requestAnimationFrame(stepBoom);
+}
+
+function createConfettiParticle(x, y, sp, angle) {
+    return {
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * sp,
+        vy: Math.sin(angle) * sp,
+        g: 0.25, // heavier gravity
+        life: 100 + Math.random() * 60,
+        s: 3 + Math.random() * 5,
+        r: Math.random() * Math.PI,
+        vr: (-0.2 + Math.random() * 0.4),
+        col: getRandomColor()
+    };
+}
+
+function getRandomColor() {
+    const colors = [
+        '255,0,0', '0,255,0', '0,0,255', '255,255,0', '0,255,255', '255,0,255', // basic
+        '255,99,71', '144,238,144', '135,206,235', '255,215,0', // fancy
+        '255,255,255' // white
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
 }
 
 function stepBoom() {
@@ -537,6 +597,12 @@ function showWinner(data) {
     const popup = document.getElementById('winnerPopup');
     popup.classList.remove('hidden');
     requestAnimationFrame(() => popup.classList.add('show'));
+
+    // Check special prize for mega confetti
+    const pCode = (window.currentPrizeData && window.currentPrizeData.code) ? window.currentPrizeData.code : '';
+    if (pCode.toLowerCase() === 'special') {
+        megaConfetti();
+    }
 }
 
 function hideWinner() {
