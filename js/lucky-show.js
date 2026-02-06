@@ -628,6 +628,9 @@ function showWinner(data) {
 }
 
 function hideWinner() {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
     stopMegaConfetti(); // Stop confetti loop
     document.getElementById('winnerOverlay').classList.add('hidden');
     const popup = document.getElementById('winnerPopup');

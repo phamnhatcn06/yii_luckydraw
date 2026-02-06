@@ -1293,6 +1293,36 @@ span.partInfo .job {
     animation: zoomInUp 0.6s ease-out;
 }
 
+/* Ensure hidden means hidden */
+.hidden {
+    display: none !important;
+}
+
+/* Special Message Styling */
+.special-msg {
+    position: fixed;
+    bottom: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(20px, 2.5vw, 32px);
+    font-weight: 800;
+    /* Bolder */
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 15px #ffd700;
+    /* Pop out */
+    text-transform: none;
+    /* Allow normal case */
+    text-align: center;
+    z-index: 10;
+    width: 90%;
+}
+
+.special-msg.hidden {
+    display: none !important;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.9);
+}
+
 @keyframes zoomInUp {
     from {
         opacity: 0;
